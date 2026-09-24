@@ -1,0 +1,5 @@
+{
+  "name": "mnist-web",
+  "private": true,
+  "type": "module"
+}

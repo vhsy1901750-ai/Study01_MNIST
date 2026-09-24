@@ -1,0 +1,53 @@
+/* 2026-09-25 00:50 KST */
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4f4f6;
+  font-family: "맑은 고딕", "Malgun Gothic", sans-serif;
+}
+
+main {
+  text-align: center;
+}
+
+h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+canvas {
+  background: #000;
+  border-radius: 8px;
+  cursor: crosshair;
+  touch-action: none;   /* 손가락으로 그릴 때 화면이 스크롤되지 않게 한다 */
+  max-width: 90vw;
+}
+
+#result {
+  font-size: 1.125rem;
+  min-height: 1.5em;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+button {
+  padding: 8px 24px;
+  font-size: 1rem;
+  font-family: inherit;
+  border: 1px solid #c8c8cc;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+
+button:disabled {
+  color: #9a9aa0;
+  cursor: default;
+}
