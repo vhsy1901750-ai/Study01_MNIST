@@ -48,3 +48,7 @@ node -e "const http=require('http'),fs=require('fs'),path=require('path');const 
 ## 획은 선으로 잇는다
 
 포인터 이벤트는 띄엄띄엄 들어온다. 점만 찍으면 빠르게 그을 때 획이 끊겨 인식이 무너진다. `app.js`의 `drawStroke()`가 직전 위치와 현재 위치를 선으로 잇는 이유다. 새 획을 시작할 때 `lastPoint`를 비우는 것도 이전 획과 이어지지 않게 하려는 것이다.
+
+## 스타일을 고치면 버전을 올린다
+
+`index.html`은 스타일시트를 `style.css?v=N`으로 불러온다. Pages가 캐시를 10분 유지하므로, 이 값을 올리지 않으면 그 사이에 다시 들어온 사람이 새 HTML에 옛 CSS를 받아 화면이 깨진다. CSS를 고칠 때마다 `N`을 올린다.
