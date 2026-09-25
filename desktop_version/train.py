@@ -9,7 +9,7 @@ from torchvision import datasets, transforms
 
 from model import MnistCNN
 
-EPOCHS = 5
+EPOCHS = 8   # 증강을 넣으면 수렴이 느려지므로 늘렸다
 BATCH_SIZE = 64
 LEARNING_RATE = 0.001
 WEIGHTS_PATH = "mnist_cnn.pt"
@@ -40,7 +40,16 @@ def main():
         transforms.ToTensor(),
         transforms.Normalize((MNIST_MEAN,), (MNIST_STD,)),
     ])
-    train_set = datasets.MNIST(root="./data", train=True, download=True, transform=transform)
+
+    # 학습셋에만 회전, 이동, 확대를 조금씩 넣는다. MNIST 원본은 획이 고른 탓에,
+    # 그대로 학습하면 사람이 마우스로 그린 삐뚤한 숫자에 약해진다. 특히 6을 5로 읽었다.
+    train_transform = transforms.Compose([
+        transforms.RandomAffine(degrees=12, translate=(0.1, 0.1), scale=(0.85, 1.15), shear=8),
+        transforms.ToTensor(),
+        transforms.Normalize((MNIST_MEAN,), (MNIST_STD,)),
+    ])
+
+    train_set = datasets.MNIST(root="./data", train=True, download=True, transform=train_transform)
     test_set = datasets.MNIST(root="./data", train=False, download=True, transform=transform)
     train_loader = DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=True)
     test_loader = DataLoader(test_set, batch_size=BATCH_SIZE)

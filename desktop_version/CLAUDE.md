@@ -20,7 +20,7 @@ Git Bash에서 한글 출력이 깨지면 `PYTHONIOENCODING=utf-8 python ...`으
 
 | 무엇을 고쳤나 | 검증 |
 | --- | --- |
-| 모델 구조(`model.py`) | `python train.py`로 재학습해 테스트 정확도 약 99%를 확인한다. 이어서 `export_weights.py`를 다시 돌리고 웹 골든 테스트까지 통과시킨다. |
+| 모델 구조(`model.py`) | `python train.py`로 재학습해 테스트 정확도 99% 이상을 확인한다. 이어서 `export_weights.py`를 다시 돌리고 웹 골든 테스트까지 통과시킨다. |
 | 전처리(`app.py`의 `preprocess()`) | 아래 스니펫으로 90% 이상을 확인한다. |
 | 내보내기(`export_weights.py`) | `python -m pytest`와 `cd ../web_version && node --test tests/` 양쪽을 통과시킨다. |
 | 실행 방식(`app.bat`, 바로가기) | 다른 작업 폴더에서 실행해도 창이 뜨는지 확인한다. |
@@ -48,3 +48,9 @@ print(f'{ok / 2:.1f}%')"
 
 - `data/`: MNIST 원본 약 64MB. `train.py`가 자동으로 내려받으며 `.gitignore`로 제외했다.
 - 바탕 화면 바로가기 `손글씨 숫자 인식기.lnk`: 대상 `pythonw.exe`, 인수 `"C:\study01_mnist\desktop_version\app.py"`, 작업 폴더 `C:\study01_mnist\desktop_version`, 아이콘 `app.ico,0`으로 WScript.Shell을 써서 만든다. 폴더를 나누면서 경로가 바뀌었으므로 예전 바로가기는 다시 만들어야 한다. 작업 표시줄 고정은 Windows 정책상 사용자가 직접 해야 한다.
+
+## 학습에 증강을 넣는 이유
+
+`train.py`는 학습셋에만 회전, 이동, 확대, 기울임을 조금씩 넣는다. MNIST 원본은 획이 고른 탓에, 증강 없이 학습하면 사람이 마우스로 그린 삐뚤한 숫자에 약해진다. 실제로 증강 전 모델은 손으로 그린 **6을 5로 읽는 일이 잦았다** (400회 흔들림 테스트에서 6이 18/40). 증강 후 40/40이 되었다.
+
+테스트셋에는 증강을 넣지 않는다. 넣으면 정확도가 무엇을 재는지 흐려진다.
