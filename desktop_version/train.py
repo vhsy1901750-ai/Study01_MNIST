@@ -13,6 +13,7 @@ EPOCHS = 8   # 증강을 넣으면 수렴이 느려지므로 늘렸다
 BATCH_SIZE = 64
 LEARNING_RATE = 0.001
 WEIGHTS_PATH = "mnist_cnn.pt"
+SYNTHETIC_PER_CLASS = 3000   # 합성으로 채워 넣을 글씨체 장수 (6과 5 각각)
 
 # MNIST 표준 평균/표준편차. app.py의 전처리와 반드시 같은 값을 써야 한다.
 MNIST_MEAN = 0.1307
@@ -51,6 +52,12 @@ def main():
 
     train_set = datasets.MNIST(root="./data", train=True, download=True, transform=train_transform)
     test_set = datasets.MNIST(root="./data", train=False, download=True, transform=transform)
+
+    # MNIST에 없는 글씨체를 채워 넣는다. 자세한 이유는 make_flat_six.py에 적었다.
+    # app.py가 이 파일의 상수를 가져오므로, 순환 참조를 피하려고 여기서 불러온다.
+    from flat_dataset import FlatStyleDataset
+
+    train_set = torch.utils.data.ConcatDataset([train_set, FlatStyleDataset(SYNTHETIC_PER_CLASS)])
     train_loader = DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=True)
     test_loader = DataLoader(test_set, batch_size=BATCH_SIZE)
 

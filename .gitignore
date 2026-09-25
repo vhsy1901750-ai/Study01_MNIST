@@ -4,3 +4,4 @@ desktop_version/data/
 
 __pycache__/
 *.pyc
+desktop_version/flat_sample.png
